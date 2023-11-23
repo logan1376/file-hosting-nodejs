@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta content="Video Upload" property="og:title" />
+  <meta content="DM to report a video or issues" property="og:description" />
+  <title>Video Upload</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,300&display=swap');
+    body {
+      text-align: center;
+      background-color: lightgray;
+      font-family: 'Nunito Sans', sans-serif;
+    }
+    button {
+      padding: 10px;
+      border: none;
+      background-color: white;
+      border-radius: 5px;
+      font-size: medium;
+    }
+    label {
+      padding: 10px;
+      border: none;
+      background-color: grey;
+      border-radius: 5px;
+      color: white;
+    }
+    input {
+      display: none;
+      z-index: 11;
+    }
+    .footer { 
+      position: absolute; 
+      bottom: 0; 
+      left: 0; 
+      width: 100%;
+      z-index: 10;
+      text-align: center;
+      background-color: grey;
+    }
+    #back {
+      text-align: left;
+      margin-top: 10px;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="window.location.href = '/'" id="back">Go Back</button>
+  <h1>Upload Video</h1>
+  <p>Max file size: 20mb</p>
+  <label for="videoInput">
+    Select Video
+    <input type="file" accept=".mov, .mp4" id="videoInput" />
+  </label>
+  <br>
+  <br>
+  <button onclick="uploadVideo()">Upload Video</button>
+  <br>
+  <progress value="0" max="100" id="progressBar"></progress>
+  <div class="footer">
+    <p>Hosted by Tom1212. on discord</p>
+    <p>DM to report a video or issues</p>
+  </div>
+<script>
+  function uploadVideo() {
+    const input = document.getElementById('videoInput');
+    const file = input.files[0];
+    if (!file) {
+      alert('Please select a video file.');
+      return;
+    }
+    if (file.size > 20 * 1024 * 1024) {
+      alert('File size exceeds 12MB limit.');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('video', file);
+    const progressBar = document.getElementById('progressBar');
+    const xhr = new XMLHttpRequest();
+    xhr.upload.addEventListener('progress', function (event) {
+      if (event.lengthComputable) {
+        const percentComplete = (event.loaded / event.total) * 100;
+        progressBar.value = percentComplete;
+      }
+    });
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        alert('Uploaded');
+        console.log(JSON.parse(xhr.responseText));
+        window.location.href = '/';
+      } else if (xhr.readyState === 4 && xhr.status !== 200) {
+        console.error('Error', xhr.statusText);
+        console.log(xhr.statusText);
+        alert('Error uploading. Please try again.');
+      }
+    };
+    xhr.open('POST', '/upload', true);
+    xhr.send(formData);
+  }
+</script>
+</body>
+</html>
