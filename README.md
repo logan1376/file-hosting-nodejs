@@ -1,5 +1,7 @@
 # file-hosting-nodejs
 
-Note: Python verson is more complete
+Note: THIS IS BROKEN AND I WILL NOT FIX 
+
+Python verson is working
 
 Only does video files
