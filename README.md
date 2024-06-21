@@ -1,7 +1,7 @@
 # file-hosting-nodejs
 
-Note: THIS IS BROKEN AND I WILL NOT FIX 
+Note: This is broken and I will not fix.
 
-Python verson is working
+Python version is working.
 
-Only does video files
+Only does video files.
